@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>常用指令</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    /*
+      v-text 元素的innerText，不可解析html标签，必须是双标签
+      v-html 元素的innerHTML，可解析html标签
+      v-if 做元素的插入（append）和移除（remove）操作
+      v-else-if
+      v-else
+      v-show 判断是否隐藏，display:none和display：block的切换
+      v-for 循环
+      数组 item，index
+      对象 value，key ，index
+    */
+
+    new Vue({
+      el:'#app',
+      template:`<div>
+          <div v-text='mytext'></div>
+
+          <div v-html='myhtml'></div>
+
+          <button v-if="checkvif">测试v-if</button>
+
+          <button v-if="num==1">num测试v-if</button>
+          <button v-else-if="num==2">num测试v-else-if</button>
+          <button v-else="num">num测试v-else</button>
+
+          <div v-show='checkshow'>这里是v-show</div>
+
+          <ul>
+            <li v-for='item in arrayfor'>{{item}}</li>
+          </ul>
+
+          <ul>
+            <li v-for='(item,index) in arrayfor'>{{item}}-{{index}}</li>
+          </ul>
+
+          <ul>
+            <li v-for='item in arrayobjectfor'>{{item}}</li>
+          </ul>
+
+          <ul>
+            <li v-for='(item,index) in arrayobjectfor'>{{item}}-{{index}}</li>
+          </ul>
+
+          <ul>
+            <li v-for='value in objfor'>{{value}}</li>
+          </ul>
+
+          <ul>
+            <li v-for='(key,value) in objfor'>{{value}}:{{key}}</li>
+          </ul>
+        
+        </div>`,
+      data:function(){
+        return {
+          mytext:'<h5>这里是v-text</h5>',
+          myhtml: '<h5>这里是v-html</h5>',
+          checkvif:false,
+          num:3,
+          checkshow:true,
+          arrayfor:['Aa','Bb','Cc'],
+          arrayobjectfor:[{
+            postion:'00',
+            value:'DD'
+          },
+          {
+            postion: '01',
+            value: 'EE'
+          },
+          {
+            postion: '02',
+            value: 'FF'
+          }],
+          objfor: {
+            postion: 'ZZ',
+            value: 'MM'
+          }
+        }
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>购物车</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+
+  <div id="app">
+    <div>
+      名称:<input type="text" v-model="course">
+      价格:<input type="text" v-model="price">
+      <button @click="addcourse">添加</button>
+    </div>
+
+    <ul>
+      <li v-for="(list,index) in classlist">
+        名称：{{list.text}}---价格{{list.price}}
+        <button @click="addtochat(index)">添加到购物车</button>
+      </li>
+    </ul>
+
+    <chat :chatarr="chatarr"></chat>
+
+  </div>
+
+  <script>
+    var Chat = {
+      props:['chatarr'],
+      template:`<div>
+      <table border="1">
+        <tr>
+          <th>是否选中</th>
+          <th>名称</th>
+          <th>数量</th>
+          <th>价格</th>
+        </tr>
+        <tr  v-for="(chat,index) in chatarr">
+          <td>
+            <input type="checkbox" v-model="chat.active">
+          </td>
+          <td>{{chat.text}}</td>
+          <td>
+            <span @click="reducecount(index)">-</span>
+            {{chat.count}}
+            <span @click="addcount(index)">+</span>
+          </td>
+          <td>{{chat.count*chat.price}}</td>
+        </tr>
+        <tr>
+          <td colspan="2">选中的数量：{{activeCount}}/{{count}}</td>
+          <td colspan="2">合计：{{totalprice}}</td>
+        </tr>
+      </table>
+    </div>`,
+    computed:{
+      activeCount(){
+        return this.chatarr.filter(v=>v.active).length;
+      },
+      count(){
+        return this.chatarr.length;
+      },
+      totalprice(){
+        let total = 0;
+        this.chatarr.forEach(v=>{
+          if(v.active){
+            total+=v.price*v.count;
+          }
+        })
+        return total;
+      }
+    },
+    methods: {
+        // 增加数量
+        addcount(index) {
+          this.chatarr[index].count++;
+        },
+        // 减少数量
+        reducecount(index) {
+          if (this.chatarr[index].count > 1) {
+            this.chatarr[index].count--;
+          } else {
+            if (window.confirm(`是否删除${this.chatarr[index].text}`)) {
+              this.chatarr.splice(index, 1);
+            }
+          }
+        },
+      }
+    }
+    new Vue({
+      el:'#app',
+      components:{
+        Chat
+      },
+      data(){
+        return {
+          classlist: [
+            { text: 'springcloud', price: 23 },
+            { text: 'vue', price: 20 },
+            { text: 'js', price: 22 },
+            { text: 'php', price: 16 }
+          ],
+          course:'',
+          price:'',
+          // 购物车数组
+          chatarr:[]
+        }
+      },
+      watch:{
+        chatarr:{
+          handler(){
+            window.localStorage.setItem('chat',JSON.stringify(this.chatarr))
+          },
+          deep:true
+        }
+      },
+      methods:{
+        // 添加课程
+        addcourse(){
+          // 插入数据到商品库
+          this.classlist.push({ text: this.course, price: this.price });
+					// 清空刚输入的商品信息
+          this.course = '';
+          this.price = '';
+        },
+        // 添加到购物车
+        addtochat(index){
+          const goods = this.classlist[index];
+          const result = this.chatarr.find(v=>v.text==goods.text);
+
+          if(result){
+            result.count+=1
+          }else{
+            this.chatarr.push({...goods,count:1,active:true})
+          }
+        },
+        // // 增加数量
+        // addcount(index){
+        //   this.chatarr[index].count++;
+        // },
+        // // 减少数量
+        // reducecount(index){
+        //   if(this.chatarr[index].count>1) { 
+        //     this.chatarr[index].count--;
+        //   }else{
+        //     if (window.confirm(`是否删除${this.chatarr[index].text}`)) {
+        //       this.chatarr.splice(index,1);
+        //     }
+        //   }
+          
+        // },
+       
+      },
+      created() {
+        if(window.localStorage.getItem('chat')){
+          this.chatarr = JSON.parse(window.localStorage.getItem('chat'));
+        }
+      },
+    })
+  </script>
+  
+</body>
+</html>

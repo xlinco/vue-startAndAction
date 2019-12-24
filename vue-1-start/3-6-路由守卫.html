@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>路由守卫</title>
+  <script src="./vue.js"></script>
+  <script src="./vue-router.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    var Nav = {
+      template: `<div>
+      <router-view></router-view>
+      <router-link :to="{name:'nav.index'}">首页</router-link>
+      <router-link :to="{name:'nav.personal'}">个人中心</router-link>
+      <router-link :to="{name:'nav.message'}">资讯</router-link>
+      <router-link :to="{name:'nav.mine'}">我的</router-link>
+    </div>`
+    }
+    var Index = {
+      template: `<div>首页</div>`
+    }
+    var Personal = {
+      template: `<div>个人中心</div>`
+    }
+    var Message = {
+      template: `<div>资讯</div>`
+    }
+    var Mine = {
+      template: `<div>我的</div>`
+    }
+
+    // 安装路由插件
+    Vue.use(VueRouter);
+    // 创建路哟对象
+    var router = new VueRouter({
+      // 配置路由
+      routes: [
+        {
+          path: '/nav',
+          name: 'nav',
+          component: Nav,
+          // 嵌套路由增加children属性
+          children: [
+            { path: '', redirect: '/nav/index' },
+            { path: 'index', name: 'nav.index', component: Index },
+            { path: 'personal', name: 'nav.personal', component: Personal },
+            { path: 'message', name: 'nav.message', component: Message },
+            { path: 'mine', name: 'nav.mine', component: Mine },
+          ]
+        },
+      ]
+    })
+
+    new Vue({
+      el: '#app',
+      router,
+      template: `<div>
+        <router-view></router-view>
+      </div>`,
+      data: function () {
+        return {
+          loginState:true,
+        }
+      },
+      mounted(){
+        router.beforeEach((to,from,next) => {
+
+          // next 执行的时候才会跳转
+          console.log(to)
+          console.log(from)
+          console.log(next)
+
+          if(to.path=='/nav/index'){
+            next();
+          }else{
+            setTimeout(function(){
+              next();
+            },2000)
+          }
+        })
+      }
+    })
+  </script>
+</body>
+</html>

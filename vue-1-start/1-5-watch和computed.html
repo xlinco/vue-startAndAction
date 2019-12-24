@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>watch和computed</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div>watch监听数据</div><br/>
+
+    <div>
+      监听器
+      <input type="text" v-model="msg">
+    </div>
+
+    <br/>
+
+    <div>
+      深度监听
+      <input type="text" v-model="msgdeep.text">
+    </div>
+
+    <br/>
+    <br/>
+    <br/>
+
+    <div>computed计算属性</div>
+
+    <br/>
+
+    (<input style="width: 50px;" type="text" v-model="n1">+
+    <input style="width: 50px;" type="text" v-model="n2">)*
+    <input style="width: 50px;" type="text" v-model="n3">={{result}}
+    
+    
+  </div>
+
+  <script>
+    new Vue({
+      el:'#app',
+      // template:`<div>模板内容{{msg}}</div>`,
+      data:function(){
+        return {
+          msg:'',
+          msgdeep:{
+            text:''
+          },
+          n1:'',
+          n2: '',
+          n3:'1'
+        }
+      },
+      computed:{
+        result(){
+          return (Number(this.n1) + Number(this.n2)) * Number(this.n3)
+        }
+      },
+      watch:{
+        msg(newval,oldval){
+          console.log(newval, oldval)
+          if(newval=='1'){
+            console.log('监听器')
+          }
+        },
+
+        // 深度监听
+        msgdeep:{
+          handler(newval, oldval) {
+            console.log(newval, oldval)
+            if (newval.text == '1') {
+              console.log('深度监听')
+            }
+          },
+          deep:true
+        }
+      }
+    })
+  </script>
+</body>
+</html>

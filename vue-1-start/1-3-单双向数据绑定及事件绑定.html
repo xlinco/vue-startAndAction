@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>单双向数据绑定及事件绑定</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    new Vue({
+      el:'#app',
+      template:`<div>
+
+          单项数据绑定
+          <div>name:{{name}}</div>
+          <input type='text' v-bind:value='name' :class='name'/>
+
+          </br>
+          </br>
+          双项数据绑定
+          <div>modeldata:{{modeldata}}</div>
+          <input type='text' v-model='modeldata' :class='modeldata'/>
+
+          </br>
+          </br>
+          事件绑定</br>
+          <button v-on:click='name="name改变"'>点击改变name值</button>
+
+          </br>
+          </br>
+          <button v-on:click='change'>点击改变name值</button>
+
+        </div>`,
+      data:function(){
+        return {
+          name:'Hello-Vue',
+          modeldata:'1'
+        }
+      },
+      methods:{
+        change:function(){
+          this.name = 'name改变-change'
+        }
+      }
+    })
+  </script>
+</body>
+</html>

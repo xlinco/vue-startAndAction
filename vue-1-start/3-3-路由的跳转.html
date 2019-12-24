@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>路由的跳转</title>
+  <script src="./vue.js"></script>
+  <script src="./vue-router.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    var Login = {
+      template:`<div>这是登录页面</div>`
+    }
+    var Register = {
+      template:`<div>这是注册页面</div>`
+    }
+    var Buy = {
+        template: `<div>这是buy页面</div>`
+      }
+    // 安装路由插件
+    Vue.use(VueRouter);
+    // 创建路哟对象
+    var router = new VueRouter({
+      // 配置路由
+      routes:[
+        { path: '/login', name: 'login', component: Login},
+        { path: '/register', name: 'register', component: Register},
+        { path: '/buy', name: 'buy', component: Buy}
+      ]
+    })
+    
+    new Vue({
+      el:'#app',
+      router,
+      template:`<div>
+          <router-link to='/login'>去登录</router-link>
+          <router-link to='/register'>去注册</router-link>
+          <div>
+            <button @click='goregister'>点击去buy</button>  
+            <button @click='goback'>返回上一页</button>  
+          </div>
+          
+          <router-view></router-view>
+        </div>`,
+      data:function(){
+        return {
+          
+        }
+      },
+      methods:{
+        goregister() {
+          // push跟replace可以达到同样的跳转效果，但是replace是不会向history插入历史记录的
+          // this.$router.push({ path: '/register'})
+          this.$router.replace({ path: '/buy'})
+        },
+        goback(){
+          this.$router.go(-1);
+        }
+      }
+    })
+  </script>
+</body>
+</html>

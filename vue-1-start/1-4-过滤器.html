@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>过滤器</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div>
+      输入的内容：<input type="text" v-model='instring'>
+    </div>
+    <div>
+      输出的内容：{{instring}}
+    </div>
+    <div>
+      <!-- 反转输出的内容：{{instring | reversal}} -->
+      {{instring | reversal('反转输出：')}}
+    </div>
+    
+  </div>
+
+  <script>
+
+    console.log(this)
+    // 全局过滤器
+    Vue.filter('reversal',function(val, arg2){
+      return arg2 + val.split('').reverse().join('');
+    })
+    new Vue({
+      el:'#app',
+      // template:`<div>
+        
+      //   </div>`,
+      data:function(){
+        return {
+          instring:''
+        }
+      },
+      created(){
+        console.log('vue:',this)
+      }
+      // filters:{
+      //   // reversal(val){
+      //   //   // 字符串先转换成数组，反转，再转回字符串
+      //   //   return val.split('').reverse().join('');
+      //   // }
+
+      //   reversal(val,arg2) {
+      //     // 字符串先转换成数组，反转，再转回字符串
+      //     return arg2+val.split('').reverse().join('');
+      //   }
+      // }
+      
+    })
+  </script>
+</body>
+</html>

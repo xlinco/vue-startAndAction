@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>插槽和获取子实例父实例</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    var Child = {
+        template: `<div>这里是子组件</div>`,
+        data() {
+          return {
+            msg: 'hello'
+          }
+        },
+        created(){
+          console.log(this.$parent)
+        }
+      }
+    var Parent = {
+        template: `<div>
+            这里是父组件
+            <slot name='hello'></slot>
+            <child ref='childs'></child>
+          </div>`,
+          components:{
+            Child
+          },
+          data() {
+            return {
+              parents: '这里是父组件'
+            }
+          },
+          mounted(){
+            // console.log(this.$refs.childs)
+            // console.log(this.$refs.childs.$el)
+          }
+      }
+    
+    new Vue({
+      el:'#app',
+      components:{
+        Parent
+      },
+      template:`<div>
+          <parent>
+            <div>这里是插槽内容1</div>
+            <div slot='hello'>这里是插槽内容2</div>
+            <div>这里是插槽内容3</div>
+          </parent>
+        </div>`,
+      data:function(){
+        return {
+          
+        }
+      }
+    })
+  </script>
+</body>
+</html>
